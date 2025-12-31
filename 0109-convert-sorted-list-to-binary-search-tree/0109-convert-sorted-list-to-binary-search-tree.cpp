@@ -21,29 +21,35 @@
  */
 class Solution {
 public:
+    vector<int> linkedlisttoArray(ListNode* head) {
+        vector<int> arr;
 
-
-    TreeNode *buildBST(vector<int> &ans, int start, int end){
-        if(start > end){
-            return NULL;
+        while (head != NULL) {
+            arr.push_back(head->val);
+            head = head->next;
         }
 
-        int mid = start + (end-start+1)/2;
-        TreeNode *root = new TreeNode(ans[mid]);
-        root->left = buildBST(ans, start, mid-1);
-        root->right = buildBST(ans, mid+1, end);
+        return arr;
+    }
+
+    // Step 2: Build Balanced BST from sorted array
+    TreeNode* buildBST(vector<int>& arr, int start, int end) {
+        if (start > end) return NULL;
+
+        int mid = start + (end - start + 1) / 2;
+        TreeNode* root = new TreeNode(arr[mid]);
+
+        root->left = buildBST(arr, start, mid - 1);
+        root->right = buildBST(arr, mid + 1, end);
 
         return root;
     }
 
     TreeNode* sortedListToBST(ListNode* head) {
-        
-        vector<int> ans;
-        while(head){
-            ans.push_back(head->val);
-            head = head->next;
-        }
+        // Convert linked list to array
+        vector<int> arr = linkedlisttoArray(head);
 
-        return buildBST(ans, 0, ans.size()-1);
+        // Build BST
+        return buildBST(arr, 0, arr.size() - 1);
     }
 };
