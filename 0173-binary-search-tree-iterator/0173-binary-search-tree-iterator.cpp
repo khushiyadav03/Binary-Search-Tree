@@ -10,35 +10,29 @@
  * };
  */
 class BSTIterator {
-private:
-    stack<TreeNode*> st;
+public:
 
-    void pushLeft(TreeNode* node){
-        while(node != NULL){
-            st.push(node);
-            node = node->left;
+    stack<TreeNode*>st;
+    void solve(TreeNode* root){
+        while(root != nullptr){
+            st.push(root);
+            root = root->left;
         }
     }
-public:
     BSTIterator(TreeNode* root) {
-        pushLeft(root);
+        solve(root);
     }
     
-    // returns next smallest element
     int next() {
-        TreeNode* node = st.top();
+        TreeNode* ans = st.top();
         st.pop();
 
-        //if right child exists, process its left subtree
-        if(node->right != NULL){
-            pushLeft(node->right);
-        }
-
-        return node->val;
+        solve(ans->right);
+        return ans->val;
     }
     
     bool hasNext() {
-        return !st.empty();
+        return st.size()>0;
     }
 };
 
